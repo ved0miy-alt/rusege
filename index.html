@@ -3,35 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ЕГЭ — MiniApp</title>
+<title>ЕГЭ MiniApp</title>
+
 <style>
-* { box-sizing: border-box; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; margin:0; padding:0; }
-body { background:#000; color:#fff; display:flex; flex-direction:column; height:100vh; }
-.top { display:flex; justify-content:center; align-items:center; padding:10px; gap:12px; }
-.mode-btn { flex:1; text-align:center; padding:8px; border-radius:25px; border:2px solid #2AABEE; color:#2AABEE; font-weight:600; cursor:pointer; transition:0.2s; user-select:none; }
-.mode-btn.active { background:#2AABEE; color:#000; }
-.word { flex:1; display:flex; justify-content:center; align-items:center; white-space:nowrap; overflow:hidden; font-weight:600; transition:letter-spacing 0.1s ease; }
-.letter { display:inline-block; padding:6px; margin:2px; border-radius:50%; cursor:pointer; user-select:none; transition:0.2s; }
-.wrong-highlight { background:#ff453a; box-shadow:0 0 8px #ff453a; }
-.message { text-align:center; font-size:0.95rem; min-height:24px; padding:6px; color:#2AABEE; }
-.bottom { padding:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:center; }
-.score { min-width:50px; height:50px; background:#1c1c1e; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:1.3rem; border:2px solid #333; color:#2AABEE; }
-.input-box { flex:1 1 150px; }
-.input-box input { width:100%; padding:12px; border-radius:35px; border:none; background:#1c1c1e; color:white; text-align:center; font-size:1rem; }
-.menu { width:50px; height:50px; border-radius:50%; background:#1c1c1e; display:flex; justify-content:center; align-items:center; font-size:22px; border:2px solid #333; color:#2AABEE; cursor:pointer; }
-@media (max-width: 360px) {
-  .letter { padding:4px; margin:1px; }
-  .input-box input { font-size:0.95rem; padding:10px; }
-  .score { min-width:45px; height:45px; font-size:1.1rem; }
-  .menu { width:45px; height:45px; font-size:20px; }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+
+body{
+  background:#000;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* ====== TOP ====== */
+
+.top{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  padding:14px 0;
+}
+
+.ege-btn{
+  padding:8px 28px;
+  border-radius:30px;
+  background:#1c1c1e;
+  border:2px solid #2AABEE;
+  color:#2AABEE;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.ege-btn:active{
+  transform:scale(.96);
+}
+
+.dropdown{
+  position:absolute;
+  top:60px;
+  background:#1c1c1e;
+  border-radius:16px;
+  overflow:hidden;
+  width:170px;
+  transform:translateY(-10px);
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  border:1px solid #2a2a2c;
+}
+
+.dropdown.show{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+
+.dropdown-item{
+  padding:12px;
+  text-align:center;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.dropdown-item:hover{
+  background:#2AABEE;
+  color:#000;
+}
+
+/* ===== WORD AREA ===== */
+
+.word{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:nowrap;
+  padding:0 10px;
+  overflow:hidden;
+  text-align:center;
+}
+
+.letter{
+  display:inline-block;
+  padding:4px;
+  margin:2px;
+  border-radius:50%;
+  cursor:pointer;
+  user-select:none;
+  transition:.2s;
+}
+
+.wrong{
+  background:#ff453a;
+  box-shadow:0 0 8px #ff453a;
+}
+
+.message{
+  text-align:center;
+  min-height:28px;
+  padding:6px;
+  font-size:.95rem;
+  color:#2AABEE;
+}
+
+/* ===== BOTTOM ===== */
+
+.bottom{
+  padding:12px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+}
+
+.score{
+  min-width:48px;
+  height:48px;
+  background:#1c1c1e;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:1.2rem;
+  border:2px solid #333;
+  color:#2AABEE;
+}
+
+.input-box{
+  flex:1;
+  max-width:200px;
+}
+
+.input-box input{
+  width:100%;
+  padding:12px;
+  border-radius:35px;
+  border:none;
+  background:#1c1c1e;
+  color:white;
+  text-align:center;
+  font-size:1rem;
+}
+
+.next{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#1c1c1e;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:22px;
+  border:2px solid #333;
+  color:#2AABEE;
+  cursor:pointer;
+}
+
+@media(max-width:360px){
+  .score,.next{
+    width:44px;
+    height:44px;
+  }
 }
 </style>
 </head>
 <body>
 
 <div class="top">
-  <div class="mode-btn active" id="stressMode">Ударения</div>
-  <div class="mode-btn" id="rootsMode">Корни</div>
+  <div class="ege-btn" id="egeBtn">🎓 ЕГЭ</div>
+  <div class="dropdown" id="dropdown">
+    <div class="dropdown-item" data-mode="stress">Ударения</div>
+    <div class="dropdown-item" data-mode="roots">Корни</div>
+  </div>
 </div>
 
 <div class="word" id="word"></div>
@@ -40,19 +191,23 @@ body { background:#000; color:#fff; display:flex; flex-direction:column; height:
 <div class="bottom">
   <div class="score" id="score">0</div>
   <div class="input-box">
-    <input type="text" id="answerInput" inputmode="numeric" pattern="[0-9]*" placeholder="Номер буквы">
+    <input type="text" id="answerInput" inputmode="numeric" placeholder="Номер буквы">
   </div>
-  <div class="menu" id="nextBtn">↻</div>
+  <div class="next" id="nextBtn">↻</div>
 </div>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script>
+
+// ===== Telegram =====
 const tg = window.Telegram.WebApp;
 tg.expand();
 tg.ready();
 
-// ======== Банк слов ========
-const stressBank = ["аэропОрты", "бАнты", "бОроду", "бухгАлтеров", "вероисповЕдание",
+// ===== DATA =====
+
+const banks = {
+  stress: ["аэропОрты", "бАнты", "бОроду", "бухгАлтеров", "вероисповЕдание",
         "водопровОд", "газопровОд", "граждАнство", "дефИс", "дешевИзна",
         "диспансЕр", "договорËнность", "докумЕнт", "досУг", "еретИк",
         "жалюзИ", "знАчимость", "Иксы", "каталОг", "квартАл",
@@ -93,118 +248,134 @@ const stressBank = ["аэропОрты", "бАнты", "бОроду", "бух�
         "приручЁнный", "прожИвший", "снятА", "сОгнутый", "углублЁнный",
         "закУпорив", "начАв", "начАвшись", "отдАв", "понЯв",
         "прибЫв", "создАв", "вОвремя", "дОверху", "дОнизу",
-        "дОсуха", "зАсветло", "красИвее", "надОлго", "ненадОлго"];
-const rootsBank = ["корень1","корень2","корень3"]; // сюда добавь свои слова с корнями
-
-function parseBank(bank){
-  return bank.map(word=>{
-    let stress=-1;
-    for(let i=0;i<word.length;i++){
-      if(word[i]!==word[i].toLowerCase()) stress=i;
-    }
-    if(stress===-1) stress=0;
-    return {word:word, stress:stress};
-  });
-}
-
-const banks = {
-  stress: parseBank(stressBank),
-  roots: parseBank(rootsBank)
+        "дОсуха", "зАсветло", "красИвее", "надОлго", "ненадОлго"],
+  roots: ["раст/рос","бер/бир","кас/кос"]
 };
 
-// ======== Переменные ========
-let currentMode = "stress"; // stress или roots
+let currentMode = "stress";
 let currentItem;
 let score = 0;
+
+// ===== DOM =====
 
 const wordDiv = document.getElementById("word");
 const messageDiv = document.getElementById("message");
 const scoreEl = document.getElementById("score");
 const input = document.getElementById("answerInput");
 const nextBtn = document.getElementById("nextBtn");
+const egeBtn = document.getElementById("egeBtn");
+const dropdown = document.getElementById("dropdown");
 
-const stressBtn = document.getElementById("stressMode");
-const rootsBtn = document.getElementById("rootsMode");
+// ===== MENU =====
 
-// ======== Функции ========
-function fitWord(){
-  const letters = wordDiv.querySelectorAll(".letter");
-  if(letters.length===0) return;
-  let fontSize = window.innerWidth / (letters.length + 1);
-  fontSize = Math.min(Math.max(fontSize*0.6,16),64);
-  letters.forEach(l=>l.style.fontSize = fontSize+"px");
+egeBtn.onclick = () => dropdown.classList.toggle("show");
+
+document.querySelectorAll(".dropdown-item").forEach(item=>{
+  item.onclick=()=>{
+    setMode(item.dataset.mode);
+    dropdown.classList.remove("show");
+  }
+});
+
+document.addEventListener("click",(e)=>{
+  if(!egeBtn.contains(e.target) && !dropdown.contains(e.target)){
+    dropdown.classList.remove("show");
+  }
+});
+
+// ===== MODE =====
+
+function setMode(mode){
+  currentMode = mode;
+  score = 0;
+  scoreEl.innerText = score;
+  loadNew();
+}
+
+// ===== LOGIC =====
+
+function parseStress(word){
+  let stressIndex = 0;
+  for(let i=0;i<word.length;i++){
+    if(word[i]!==word[i].toLowerCase()){
+      stressIndex = i;
+    }
+  }
+  return {word:word,stress:stressIndex};
 }
 
 function showWord(item){
   wordDiv.innerHTML="";
   item.word.split("").forEach((ch,i)=>{
-    const span = document.createElement("span");
+    const span=document.createElement("span");
     span.className="letter";
-    span.innerText = ch.toUpperCase();
-    span.onclick = ()=>check(i);
+    span.innerText=ch.toUpperCase();
+    span.onclick=()=>check(i);
     wordDiv.appendChild(span);
   });
-  setTimeout(fitWord,50);
+  fitWord();
 }
 
-function showCorrect(){
+function fitWord(){
   const letters=document.querySelectorAll(".letter");
-  letters[currentItem.stress].classList.add("wrong-highlight");
+  if(!letters.length) return;
+  let size = window.innerWidth/(letters.length+1);
+  size=Math.min(Math.max(size*0.6,18),60);
+  letters.forEach(l=>l.style.fontSize=size+"px");
 }
 
 function check(index){
-  if(index===currentItem.stress){
-    score++;
-    scoreEl.innerText=score;
-    messageDiv.innerText="✅ Верно!";
-    setTimeout(loadNew,400);
-  } else {
-    messageDiv.innerText=`❌ Ошибка! Позиция: ${currentItem.stress+1}`;
-    showCorrect();
+  if(currentMode==="stress"){
+    if(index===currentItem.stress){
+      success();
+    }else{
+      fail();
+      document.querySelectorAll(".letter")[currentItem.stress].classList.add("wrong");
+    }
   }
+}
+
+function success(){
+  score++;
+  scoreEl.innerText=score;
+  messageDiv.innerText="✅ Верно";
+  setTimeout(loadNew,400);
+}
+
+function fail(){
+  messageDiv.innerText="❌ Ошибка";
 }
 
 function loadNew(){
-  const bank = banks[currentMode];
-  currentItem = bank[Math.floor(Math.random()*bank.length)];
-  showWord(currentItem);
   messageDiv.innerText="";
   input.value="";
   input.focus();
-}
 
-// ======== Переключение режимов ========
-function setMode(mode){
-  currentMode = mode;
-  if(mode==="stress"){
-    stressBtn.classList.add("active");
-    rootsBtn.classList.remove("active");
-  } else {
-    rootsBtn.classList.add("active");
-    stressBtn.classList.remove("active");
+  if(currentMode==="stress"){
+    const raw = banks.stress[Math.floor(Math.random()*banks.stress.length)];
+    currentItem = parseStress(raw);
+    showWord(currentItem);
+  }else{
+    const raw = banks.roots[Math.floor(Math.random()*banks.roots.length)];
+    currentItem = {word:raw};
+    wordDiv.innerHTML="<div style='font-size:28px'>"+raw+"</div>";
   }
-  score = 0;
-  scoreEl.innerText=score;
-  loadNew();
 }
 
-stressBtn.onclick = ()=>setMode("stress");
-rootsBtn.onclick = ()=>setMode("roots");
+// ===== INPUT =====
 
-// ======== События ========
 input.addEventListener("keypress",e=>{
-  if(e.key==="Enter"){
-    const val = parseInt(input.value)-1;
-    if(!isNaN(val) && val>=0 && val<currentItem.word.length) check(val);
+  if(e.key==="Enter" && currentMode==="stress"){
+    const val=parseInt(input.value)-1;
+    if(!isNaN(val)) check(val);
     input.value="";
   }
 });
 
-nextBtn.onclick = loadNew;
+nextBtn.onclick=loadNew;
 window.addEventListener("resize",fitWord);
 
-// ======== Старт ========
-scoreEl.innerText=score;
+// старт
 loadNew();
 
 </script>
